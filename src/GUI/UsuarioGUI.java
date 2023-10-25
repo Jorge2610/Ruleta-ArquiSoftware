@@ -19,7 +19,7 @@ public class UsuarioGUI extends JPanel{
 
     public UsuarioGUI(CasinoRoyale casino){
         super(new GridBagLayout());
-        setPreferredSize(new Dimension(800, 580));
+        setPreferredSize(new Dimension(850, 750));
         this.casino = casino;
         initComponents();
     }

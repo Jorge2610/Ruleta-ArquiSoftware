@@ -3,6 +3,7 @@ package GUI;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -24,12 +25,20 @@ public class TableroGUI extends JPanel {
     private JButton[][] casillas;
     private String[][] casillasValores;
     private HashMap<JButton, String> textoBoton;
+    private ImageIcon backgroundImage;
 
     public TableroGUI(int ancho, int alto, MesaDeJuego mesaDeJuego) {
         super(new GridBagLayout());
         setPreferredSize(new Dimension(ancho, alto));
+        backgroundImage = new ImageIcon(getClass().getResource("/Recursos/alfombra.png"));
         this.mesaDeJuego = mesaDeJuego;
         initTablero();
+    }
+
+    @Override
+    public void paintComponent( Graphics g ) {
+        super.paintComponent( g );
+        g.drawImage( backgroundImage.getImage(), 0, 0, getPreferredSize().width, getPreferredSize().height, this );
     }
 
     private void initTablero() {
@@ -44,7 +53,7 @@ public class TableroGUI extends JPanel {
         textoBoton = new HashMap<>();
     }
 
-    public Color getColorRojo(){
+    public Color getColorRojo() {
         return ROJO;
     }
 
@@ -221,7 +230,7 @@ public class TableroGUI extends JPanel {
         casilla.addMouseListener(getMouseListener(casilla, "" + i, tipo));
     }
 
-    private MouseListener getMouseListener(JButton casilla, String i, int tipo){
+    private MouseListener getMouseListener(JButton casilla, String i, int tipo) {
         return new MouseListener() {
             public void mousePressed(MouseEvent me) {
             }
@@ -280,7 +289,7 @@ public class TableroGUI extends JPanel {
         casilla.setText(texto);
     }
 
-    public void resetTablero(){
+    public void resetTablero() {
         for (Map.Entry<JButton, String> set : textoBoton.entrySet()) {
             resetCasillaText(set.getKey(), set.getValue());
         }

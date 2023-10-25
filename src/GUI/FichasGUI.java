@@ -2,6 +2,7 @@ package GUI;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -25,6 +26,11 @@ public class FichasGUI extends JPanel {
     private JPanel probabilidades;
     private JPanel fichas;
     private JPanel controlPartida;
+
+    private JLabel rojo;
+    private JLabel negro;
+    private JLabel par;
+    private JLabel impar;
 
     public FichasGUI(int ancho, int alto, MesaDeJuego mesaDeJuego) {
         super(new GridBagLayout());
@@ -59,11 +65,13 @@ public class FichasGUI extends JPanel {
         probabilidades = new JPanel(new GridBagLayout());
         probabilidades.setPreferredSize(new Dimension((int)(ancho * 0.2), alto));
         GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.CENTER;
 
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 2;
         JLabel titulo = new JLabel("Probabilidades");
+        titulo.setFont(new Font("Arial", Font.PLAIN, 17));
         probabilidades.add(titulo, c);
 
         c.fill = GridBagConstraints.BOTH;
@@ -72,20 +80,24 @@ public class FichasGUI extends JPanel {
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 1;
-        JLabel rojo = new JLabel("Rojo: ");
+        rojo = new JLabel("Rojo: 47 %");
+        rojo.setFont(new Font("Arial", Font.PLAIN, 16));
         probabilidades.add(rojo, c);
 
         c.gridx = 1;
-        JLabel negro = new JLabel("negro: ");
+        negro = new JLabel("  Negro: 47 %");
+        negro.setFont(new Font("Arial", Font.PLAIN, 16));
         probabilidades.add(negro, c);
 
         c.gridx = 0;
         c.gridy = 2;
-        JLabel par = new JLabel("Par: ");
+        par = new JLabel("Par: 47 %");
+        par.setFont(new Font("Arial", Font.PLAIN, 16));
         probabilidades.add(par, c);
 
         c.gridx = 1;
-        JLabel impar = new JLabel("impar: ");
+        impar = new JLabel("  Impar: 47 %");
+        impar.setFont(new Font("Arial", Font.PLAIN, 16));
         probabilidades.add(impar, c);
     }
 
@@ -107,7 +119,7 @@ public class FichasGUI extends JPanel {
     private void initFicha(JButton ficha, int i) {
         int valoresFicha[] = { 1, 5, 10, 25, 50 };
         ImageIcon fichaIcon = new ImageIcon(getClass().getResource("/Recursos/ficha" + valoresFicha[i] + ".png"));
-        Icon icono = new ImageIcon(fichaIcon.getImage().getScaledInstance(60, 60, Image.SCALE_DEFAULT));
+        Icon icono = new ImageIcon(fichaIcon.getImage().getScaledInstance(75, 75, Image.SCALE_DEFAULT));
         ficha.setBorder(null);
         ficha.setBackground(null);
         ficha.setIcon(icono);
@@ -137,6 +149,7 @@ public class FichasGUI extends JPanel {
         controlPartida = new JPanel(new GridBagLayout());
         controlPartida.setPreferredSize(new Dimension((int)(ancho * 0.2), alto));
         JButton girarRuleta = new JButton("Girar ruleta");
+        girarRuleta.setFont(new Font("Arial", Font.PLAIN, 18));
         girarRuleta.addActionListener(e -> {
             mesaDeJuego.girarRuleta();
         });
@@ -146,6 +159,7 @@ public class FichasGUI extends JPanel {
         cons.fill = GridBagConstraints.BOTH;
         controlPartida.add(girarRuleta, cons);
         JButton salir = new JButton("Salir");
+        salir.setFont(new Font("Arial", Font.PLAIN, 18));
         salir.addActionListener(e -> {
             System.exit(0);
         });
@@ -154,4 +168,19 @@ public class FichasGUI extends JPanel {
         controlPartida.add(salir, cons);
     }
 
+    public void setProbabilidadPar(int probabilidad){
+        par.setText("Par: " + probabilidad + " %");
+    }
+
+    public void setProbabilidadImpar(int probabilidad){
+        impar.setText("  Impar: " + probabilidad + " %");
+    }
+
+    public void setProbabilidadRojo(int probabilidad){
+        rojo.setText("Rojo: " + probabilidad + " %");
+    }
+
+    public void setProbabilidadNegro(int probabilidad){
+        negro.setText("  Negro: " + probabilidad + " %");
+    }
 }

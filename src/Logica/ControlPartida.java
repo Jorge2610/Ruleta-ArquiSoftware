@@ -19,7 +19,6 @@ public class ControlPartida {
     private int numeroSorteado;
     private int pagoApuestas;
     private int totalApostado;
-    private Jugador jugador;
     private int[] posicionSorteado;
     private Plena[] casillasPlenas;
     private Columna[] casillasColumna;
@@ -28,15 +27,13 @@ public class ControlPartida {
     private PasaFalta[] casillasPasaFalta;
     private ParImpar[] casillasParImpar;
     private RojoNegro[] casillasRojoNegro;
+    private int turno;
 
     public ControlPartida(MesaDeJuego mesaDeJuego) {
         this.mesaDeJuego = mesaDeJuego;
         generador = new Random();
+        turno = 1;
         initCasillas();
-    }
-
-    public void setJugador(Jugador jugador){
-        this.jugador = jugador;
     }
 
     public void initCasillas() {
@@ -51,6 +48,10 @@ public class ControlPartida {
         casillasRojoNegro = new RojoNegro[] { new RojoNegro(), new RojoNegro() };
         pagoApuestas = 0;
         totalApostado = 0;
+    }
+
+    public int getTurno(){
+        return turno;
     }
 
     private void initCasillasPlenas() {
@@ -73,6 +74,7 @@ public class ControlPartida {
             posicionSorteado = null;
         }
         pagoApuestas = pagarApuestas();
+        turno++;
     }
 
     public int getNumeroSorteado() {

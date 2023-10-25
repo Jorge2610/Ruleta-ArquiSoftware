@@ -5,13 +5,17 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+
+import Logica.Historial;
 
 public class RuletaGUI extends JPanel {
 
@@ -24,6 +28,8 @@ public class RuletaGUI extends JPanel {
     private JPanel ruleta;
     private JLabel ruletaDisplay;
     private JPanel infoPartida;
+    private JLabel turno;
+    private Historial historial;
 
     public RuletaGUI(int ancho, int alto) {
         super(new GridBagLayout());
@@ -31,6 +37,7 @@ public class RuletaGUI extends JPanel {
         this.alto = alto;
         setPreferredSize(new Dimension(ancho, alto));
         initComponents();
+        historial = new Historial();
     }
 
     public void setNombreJugador(String nombre) {
@@ -41,7 +48,7 @@ public class RuletaGUI extends JPanel {
         saldo.setText("Saldo: " + dinero + " Bs.");
     }
 
-    public void setApuesta(int monto){
+    public void setApuesta(int monto) {
         apuesta.setText("Apuesta: " + monto + " Bs.");
     }
 
@@ -69,24 +76,25 @@ public class RuletaGUI extends JPanel {
         infoUsuario = new JPanel(new GridBagLayout());
         infoUsuario.setPreferredSize(new Dimension((int) (ancho * 0.25), alto));
         GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(2, 0, 2, 0);
 
         c.gridx = 0;
         c.gridy = 0;
         c.anchor = GridBagConstraints.NORTHWEST;
         usuario = new JLabel("Usuario: ");
-        usuario.setFont(new Font("Arial", Font.PLAIN, 15));
+        usuario.setFont(new Font("Arial", Font.PLAIN, 18));
         infoUsuario.add(usuario, c);
 
         c.gridx = 0;
         c.gridy = 1;
         saldo = new JLabel("Saldo: ");
-        saldo.setFont(new Font("Arial", Font.PLAIN, 15));
+        saldo.setFont(new Font("Arial", Font.PLAIN, 18));
         infoUsuario.add(saldo, c);
 
         c.gridx = 0;
         c.gridy = 2;
         apuesta = new JLabel("Apuesta: 0 Bs.");
-        apuesta.setFont(new Font("Arial", Font.PLAIN, 15));
+        apuesta.setFont(new Font("Arial", Font.PLAIN, 18));
         infoUsuario.add(apuesta, c);
 
         c.gridx = 0;
@@ -103,13 +111,14 @@ public class RuletaGUI extends JPanel {
         ruleta.setPreferredSize(new Dimension((int) (ancho * 0.5), alto));
         GridBagConstraints c = new GridBagConstraints();
 
-        JLabel turno = new JLabel("Turno: ");
+        turno = new JLabel("Turno: 1");
+        turno.setFont(new Font("Arial", Font.PLAIN, 20));
         c.gridx = 0;
         c.gridy = 0;
         ruleta.add(turno, c);
 
         ruletaDisplay = new JLabel();
-        ruletaDisplay.setPreferredSize(new Dimension(alto - 30, alto - 30));
+        ruletaDisplay.setPreferredSize(new Dimension(alto - 25, alto - 25));
         c.gridx = 0;
         c.gridy = 1;
         setRuletaDisplay(0);
@@ -121,18 +130,19 @@ public class RuletaGUI extends JPanel {
         infoPartida.setPreferredSize(new Dimension((int) (ancho * 0.25), HEIGHT));
         GridBagConstraints c = new GridBagConstraints();
 
-        JLabel resultados = new JLabel("Resultados");
+        JButton resultados = new JButton("Ver historial");
+        resultados.setFont(new Font("Arial", Font.PLAIN, 18));
+        resultados.addActionListener(e -> {
+            JScrollPane scroll = new JScrollPane(historial.getTable());
+            JPanel panel = new JPanel();
+            scroll.setPreferredSize(new Dimension(550, 150));
+            panel.add(scroll);
+            JOptionPane.showMessageDialog(getParent(), panel, "Historial de partida",
+                    JOptionPane.PLAIN_MESSAGE);
+        });
         c.gridx = 0;
         c.gridy = 0;
         infoPartida.add(resultados, c);
-
-        c.gridx = 0;
-        c.gridy = 1;
-        JTextArea infoArea = new JTextArea();
-        String cabeceras = "Turno   Apuesta     Numero      Balance";
-        infoArea.setText(cabeceras);
-        JScrollPane scroll = new JScrollPane(infoArea);
-        infoPartida.add(scroll, c);
     }
 
     public void setRuletaDisplay(int control) {
@@ -148,5 +158,13 @@ public class RuletaGUI extends JPanel {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public void setTurno(int turno) {
+        this.turno.setText("Turno:  " + turno);
+    }
+
+    public void insertTurnoHistorial(int turno, String nroGanador, int apuesta, int pago, int saldo){
+        historial.insertTurno(turno, nroGanador, apuesta, pago, saldo);
     }
 }
