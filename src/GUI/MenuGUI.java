@@ -175,9 +175,7 @@ public class MenuGUI extends JPanel {
                 +
                 "6.- Próximo giro: Una vez que se hayan pagado las ganancias de la ronda anterior, los jugadores\n   pueden realizar nuevas apuestas para el próximo giro de la rueda.\n\n"
                 +
-                "7.- Historial: Se puede ver los datos historicos de turnos anteriores en cualquier momento.\n\n" +
-                "\t\t APUESTAS DISPONIBLES\n\n" +
-                "";
+                "7.- Historial: Se puede ver los datos historicos de turnos anteriores en cualquier momento.";
         return reglas;
     }
 
