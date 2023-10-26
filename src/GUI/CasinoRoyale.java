@@ -11,7 +11,7 @@ public class CasinoRoyale {
 
     private JFrame frame;
     private JPanel panel;
-    private JPanel menu;
+    private MenuGUI menu;
     private UsuarioGUI usuario;
     private MesaDeJuego mesaDeJuego;
 
@@ -27,10 +27,13 @@ public class CasinoRoyale {
     }
 
     private void initComponents(){
+        menu = new MenuGUI(this);
+        panel.add("menu", menu);
+
         usuario = new UsuarioGUI(this);
         panel.add("usuario", usuario);
 
-        mesaDeJuego = new MesaDeJuego();
+        mesaDeJuego = new MesaDeJuego(this);
         panel.add("mesaDeJuego", mesaDeJuego);
     }
 

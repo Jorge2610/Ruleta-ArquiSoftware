@@ -1,0 +1,31 @@
+@startuml DiagramaDeEstado
+
+[*] -right-> ViendoMenu : Arrancar la app
+
+ViendoMenu -down-> ObtenerDatosPartida : Iniciar partida
+ObtenerDatosPartida -up-> ViendoMenu: Atras
+ObtenerDatosPartida -down-> Jugando: Jugar
+
+state fork_state <<fork>>
+
+ViendoMenu -up-> fork_state : Ver
+fork_state -right-> ViendoReglas : Reglas
+fork_state -left-> ViendoApuestas : Apuestas
+ViendoMenu -right-> [*] : Salir
+
+ViendoReglas --> ViendoMenu : Ok
+ViendoApuestas --> ViendoMenu : Ok
+
+Jugando -up-> ViendoMenu : Salir
+Jugando -left-> ViendoHistorial : Historial
+ViendoHistorial -right-> Jugando : Ok
+
+Jugando --> RelizandoApuestas : Apostar
+RelizandoApuestas --> RuletaGirando : Girar ruleta
+Jugando -right-> RuletaGirando : Girar ruleta
+RuletaGirando -right-> MostrandoNroSorteado : Sortear numero
+MostrandoNroSorteado -up-> MostrandoResultadoApuestas : Ok
+MostrandoResultadoApuestas -up-> ActualizandoInterfaz : Ok
+ActualizandoInterfaz -left-> Jugando : Nuevo turno
+
+@enduml

@@ -46,4 +46,8 @@ public class Historial {
         return tabla;
     }
 
+    public void resetTabla(){
+        modeloTabla.setRowCount(0);
+    }
+
 }

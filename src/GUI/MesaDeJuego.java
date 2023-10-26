@@ -20,12 +20,13 @@ import Logica.Probabilidad;
 
 public class MesaDeJuego extends JPanel {
 
-    private final int ANCHO = 850;
+    private final int ANCHO = 880;
     private final int ALTO = 300;
 
     private RuletaGUI ruleta;
     private TableroGUI tableroApuestas;
     private FichasGUI fichas;
+    private CasinoRoyale casino;
 
     private ControlPartida controlPartida;
     private Jugador jugador;
@@ -33,13 +34,14 @@ public class MesaDeJuego extends JPanel {
 
     private int valorApuesta;
 
-    public MesaDeJuego() {
+    public MesaDeJuego(CasinoRoyale casino) {
         setLayout(new GridBagLayout());
         initRuleta(0, 0);
         initTableroApuestas(0, 1);
         initFichas(0, 2);
         controlPartida = new ControlPartida(this);
         probabilidad = new Probabilidad();
+        this.casino = casino;
         valorApuesta = 0;
     }
 
@@ -55,7 +57,7 @@ public class MesaDeJuego extends JPanel {
         cons.gridx = x;
         cons.gridy = y;
         cons.gridwidth = 3;
-        ruleta = new RuletaGUI(ANCHO, ALTO + 30);
+        ruleta = new RuletaGUI(ANCHO, ALTO);
         add(ruleta, cons);
     }
 
@@ -213,5 +215,16 @@ public class MesaDeJuego extends JPanel {
 
     public int getValorApuesta() {
         return valorApuesta;
+    }
+
+    public void terminarPartida() {
+        controlPartida = new ControlPartida(this);
+        tableroApuestas.resetTablero();
+        ruleta.setApuesta(controlPartida.getTotalApostado());
+        ruleta.setTurno(controlPartida.getTurno());
+        ruleta.resetHistorial();
+        probabilidad = new Probabilidad();
+        actualizarProbabilidades();
+        casino.cambiarCard("menu");
     }
 }

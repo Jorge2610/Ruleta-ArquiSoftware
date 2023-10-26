@@ -167,4 +167,8 @@ public class RuletaGUI extends JPanel {
     public void insertTurnoHistorial(int turno, String nroGanador, int apuesta, int pago, int saldo){
         historial.insertTurno(turno, nroGanador, apuesta, pago, saldo);
     }
+
+    public void resetHistorial(){
+        historial.resetTabla();
+    }
 }

@@ -161,7 +161,7 @@ public class FichasGUI extends JPanel {
         JButton salir = new JButton("Salir");
         salir.setFont(new Font("Arial", Font.PLAIN, 18));
         salir.addActionListener(e -> {
-            System.exit(0);
+            mesaDeJuego.terminarPartida();
         });
         cons.gridx = 0;
         cons.gridy = 1;

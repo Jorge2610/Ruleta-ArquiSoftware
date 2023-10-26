@@ -1,0 +1,185 @@
+@startuml DiagrmaCasinoRoyale
+
+class CasinoRoyale{
+    -MenuGUI menu
+    -UsuarioGUI usuario
+    -MesaDeJuego mesaDeJuego
+    -initComponents()
+    +cambiarCard(String card)
+    +setJugador(Jugador jugador)
+}
+
+class MenuGUI{
+    -CasinoRoyale casino
+    -ImageIcon backgroundImage
+    -final int ANCHO
+    -final int ALTO
+    +void paintComponent(Graphics g)
+    -void initPaneles()
+}
+
+CasinoRoyale "1" *-up- "1" MenuGUI : tiene
+
+class UsuarioGUI{
+    -CasinoRoyale casino
+    -ImageIcon backgroundImage
+    -final int ANCHO
+    -final int ALTO
+    +void paintComponent(Graphics g)
+    -void initComponents()
+}
+
+CasinoRoyale "1" *-right- "1" UsuarioGUI : tiene
+
+class MesaDeJuego{
+    -RuletaGUI ruleta
+    -TableroGUI tableroApuestas
+    -FichasGUI fichas
+    -CasinoRoyale casino
+    -ControlPartida controlPartida
+    -Jugador jugador
+    -Probabilidad probabilidad
+    -int valorApuesta
+    -void gestionTurno()
+    -void guardarDatosTurno()
+    -void actualizarProbabilidades()
+    -void mostrarNumeroSorteado()
+    -void mostrarBalanceTurno()
+    +void realizarApuesta(int tipo, String casilla)
+    +int retirarApuesta(int tipo, String casilla)
+    +void terminarPartida()
+}
+
+CasinoRoyale "1" *-left- "1" MesaDeJuego : tiene
+
+class RuletaGUI{
+    -int ancho
+    -int alto
+    -Historial historial
+    +void setRuletaDisplay(int control)
+    +void insertTurnoHistorial(int turno, String nroGanador, int apuesta, int pago, int saldo)
+    +void resetHistorial()
+}
+
+MesaDeJuego "1" *-up- "1" RuletaGUI : tiene
+
+class TableroGUI{
+    -MesaDeJuego mesaDeJuego
+    -final Color ROJO
+    -final Color NEGRO
+    -JButton[][] casillas
+    -String[][] casillasValores
+    -HashMap<JButton, String> textoBoton
+    -ImageIcon backgroundImage
+    +Color getColorRojo()
+    +void resetTablero()
+    +int[] buscarCasillaNro(int numero)
+    +JButton getCasilla(int[] posicion)
+}
+
+MesaDeJuego "1" *-left- "1" TableroGUI : tiene
+
+class FichasGUI{
+    -MesaDeJuego mesaDeJuego
+    -int ancho
+    -int alto
+    +void setProbabilidadPar(int probabilidad)
+    +void setProbabilidadImpar(int probabilidad)
+    +void setProbabilidadRojo(int probabilidad)
+    +void setProbabilidadNegro(int probabilidad)
+}
+
+MesaDeJuego "1" *-left- "1" FichasGUI : tiene
+
+class Historial{
+    -DefaultTableModel modeloTabla
+    -JTable tabla
+    -void initModelo()
+    -void initTabla()
+    +void insertTurno(int turno, String nroGanador, int apuesta, int pago, int saldo)
+    +JTable getTable()
+    +void resetTabla()
+}
+
+RuletaGUI "1" -left- "1" Historial
+
+class ControlPartida{
+    - MesaDeJuego mesaDeJuego
+    - Random generador
+    - int numeroSorteado
+    - int pagoApuestas
+    - int totalApostado
+    - int[] posicionSorteado
+    - Plena[] casillasPlenas
+    - Columna[] casillasColumna
+    - Fila[] casillasFila
+    - Docena[] casillasDocena
+    - PasaFalta[] casillasPasaFalta
+    - ParImpar[] casillasParImpar
+    - RojoNegro[] casillasRojoNegro
+    - int turno
+    + void initCasillas()
+    + int getTurno()
+    + void realizarTurno()
+    + int getNumeroSorteado()
+    + int[] getPosicionSorteado()
+    + int getPagoApuestas()
+    + int getTotalApostado()
+    + void apostarCasilla(int tipo, int casilla, int valorFicha)
+    + int retirarApuesta(int tipo, int casilla)
+}
+
+MesaDeJuego "1" o-- "1" ControlPartida
+
+class Jugador{
+    - String nombre
+    - int saldo
+    + String getNombre()
+    + int getSaldo()
+    + boolean apostar(int apuesta)
+    + void recibirGanancias(int ganancia)
+}
+
+MesaDeJuego "1" o-- "1" Jugador
+
+class Probabilidad{
+    - int vecesPar
+    - int vecesImpar
+    - int vecesRojo
+    - int vecesNegro
+    - int total
+    + void incrementarVecesPar()
+    + void incrementarVecesImpar()
+    + void incrementarVecesRojo()
+    + void incrementarVecesNegro()
+    + void incrementarTotal()
+    + int getProbabilidadPar()
+    + int getProbabilidadImpar()
+    + int getProbabilidadRojo()
+    + int getProbabilidadNegro()
+}
+
+MesaDeJuego "1" o-- "1" Probabilidad
+
+class Plena
+
+class Apuesta{
+    # Stack<Integer> fichasApostadas
+    # int pagoApuesta
+    # int totalApuesta
+}
+
+interface GestionApuesta{
+    + void realizarApuesta(int valorFicha)
+    + int retirarApuesta()
+    + int verUltimaApuesta()
+    + int getGanancia()
+}
+
+GestionApuesta <|-left- Apuesta
+
+Apuesta <|-left- Plena
+
+ControlPartida "1" -down- "2" Plena
+
+@enduml
